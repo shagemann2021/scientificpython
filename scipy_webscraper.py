@@ -5,6 +5,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import LinearRegression
+import telegram_bot as bot
+
 
 # The scrape function scrapes all the information that we need to use for our plot, our regression and for the Telegram bot
 def scrape(t='BTC-USD', p1="2017-01-01", p2=datetime.today().strftime('%Y-%m-%d')):
@@ -14,6 +16,8 @@ def scrape(t='BTC-USD', p1="2017-01-01", p2=datetime.today().strftime('%Y-%m-%d'
     current_price = ticker.info['regularMarketPrice'] # saving the current price of the ticker
 
     return [df, current_price, t] # returning a list that contains the dataframe, the current price of the ticker and the name of the ticker
+
+
 
 # The values function creates lists that contain the x and y values for our calculations and the plot
 def values(df):
@@ -63,8 +67,19 @@ def plot(t, x, y, df, current_price, correlation, x_plot, y_plot, m, b):
 
 
 # The main function puts together all data
-def main():
-    list = scrape(t='BTC-USD') # scraping with the desired parameters
+def main(user_input):
+
+    #function_from_bot sends list of strings
+    for stock in user_input:
+        try:
+            list = scrape(stock)
+            bot.decider(1)
+
+        except ValueError:
+            bot.decider(2)
+            print("Input has no data to scrape")
+
+
     data = list[0] # the dataframe
     current = list[1] # the current price
     name = list[2] # the name of the ticker
