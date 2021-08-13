@@ -5,8 +5,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import LinearRegression
-#import telegram_bot as bot
 
+
+def txt_writer(inp):
+    with open("tester.txt", "a") as test:
+        test = test.write(inp + "---")
+
+
+def plott():
+    fig, ax = plt.subplots()
+    ax.plot([1,2,3], [1,2,3])
+    plt.show()
 
 # The scrape function scrapes all the information that we need to use for our plot, our regression and for the Telegram bot
 def scrape(t='BTC-USD', p1="2017-01-01", p2=datetime.today().strftime('%Y-%m-%d')):
@@ -50,7 +59,7 @@ def regression_plot(x, y):
 
     return [x_plot, y_plot, m, b] # returning a list of values needed to plot the regression line
 
-# The plot function plots everything in a nice format
+#The plot function plots everything in a nice format
 def plot(t, x, y, df, current_price, correlation, x_plot, y_plot, m, b):
     plt.figure(figsize=(10,5)) # defines the figure size
     plt.plot(x,y, color='salmon', linewidth=1.0, label=f'Data of {t}') # plot of the historical ticker data
@@ -67,7 +76,7 @@ def plot(t, x, y, df, current_price, correlation, x_plot, y_plot, m, b):
     plt.legend(loc='upper left') # legend
     plt.tight_layout() # for better visualization
     plt.savefig('graph.png') # saves the graph
-    #plt.show()
+    plt.show()
 
 
 
@@ -93,9 +102,10 @@ def plot(t, x, y, df, current_price, correlation, x_plot, y_plot, m, b):
 
 
 # The main function puts together all data
-def returner(user_input):
+def main():
 
-    list = scrape(user_input)
+    #global user_input
+    list = scrape()
     data = list[0] # the dataframe
     current = list[1] # the current price
     name = list[2] # the name of the ticker
@@ -111,7 +121,7 @@ def returner(user_input):
     m = xyplotvalues[2] # ascent of regression line
     b = xyplotvalues[3] # intercept of regression line
 
-    return([name, x, y, data, current, correlation, x_plot, y_plot, m, b]) # plot and save the data
+    plot(name, x, y, data, current, correlation, x_plot, y_plot, m, b) # plot and save the data
 
 if __name__ == "__main__":
     main()

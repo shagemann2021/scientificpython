@@ -3,14 +3,15 @@ from telegram import Update
 import responses as re
 import scipy_webscraper as scraper
 import matplotlib.pyplot as plt
-
+import messenger as pleasedoit
+import scipy_webscraper as scraper
 
 # Indicate starting
 print("let's go")
 
 
 # Bot token
-api = '1829949109:AAFKfsZXxDEaTsuov5m40yQMwaYoGzMJMQI'
+api = '1885324908:AAEs_gWkOZmff-WDVAup5sWdhWebDcKKenc'
 
 
 # Save user input
@@ -99,56 +100,13 @@ def user_input_sharer(update: Update, context: CallbackContext) -> None:
     #print(type(str(update.message.text)/"/".lower()))
     global global_input
     global_input = str(update.message.text).lower()
-    print(global_input)
+
+    # Call function to share user input with scraper
+    scraper.txt_writer(str(global_input))
+    #t.lol(global_input)
+    #print(global_input)
 
 
-    ###Ideas for activating plotting###
-    # # Enable plotting
-    # global switch
-    #
-    # switch = "on"
-    # print(global_input)
-    # main()
-
-
-    # Call scipy_webscraper with input as list splitted at " "
-    # plotter(global_input)
-
-
-
-# def plotter(inp):
-#    '''
-#    Pass input to scraper program
-#    '''
-    # Get list of all important data for the plot
-#     core_values = scraper.returner(inp)
-#
-    # Pass important data onto plot function
-#     plot(core_values[0], core_values[1], core_values[2], core_values[3], core_values[4], core_values[5], core_values[6], core_values[7], core_values[8], core_values[9])
-
-
-# ###Nicht möglich da Plot nur in main / Nicht als thread laufen kann###
-# def plot(t, x, y, df, current_price, correlation, x_plot, m, b):
-#     '''
-#     Plot function from scraper program. Computes and saves plot from given data.
-#     '''
-#
-#     plt.figure(figsize=(10,5)) # defines the figure size
-#     plt.plot(x,y, color='salmon', linewidth=1.0, label=f'Data of {t}') # plot of the historical ticker data
-#     plt.scatter(len(df), current_price, color='mediumblue', marker='o', label='Current price', zorder=2.5, s=25) # plot of the current ticker price
-#
-#     # drawing the regression line in a color that depends on the coefficient we calculated above
-#     if correlation > 0: # positive correlation
-#         plt.plot(x_plot, m*x_plot + b, color='limegreen', label='Regression line')
-#     if correlation < 0: # negative correlation
-#         plt.plot(x_plot, m*x_plot + b, color='red', label='Regression line')
-#     if correlation == 0: # no correlation
-#         plt.plot(x_plot, m*x_plot + b, color='cadetblue', label='Regression line')
-#
-#     plt.legend(loc='upper left') # legend
-#     plt.tight_layout() # for better visualization
-#     plt.savefig('graph.png') # saves the graph
-#     plt.show()
 
 
 def error(update, context):
@@ -184,44 +142,10 @@ def main():
     dispatcher.add_handler(CommandHandler("start", start_command))
     dispatcher.add_handler(CommandHandler("help", help_command))
 
+
+
     # fetches all inputs without "/"
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, user_input_sharer))
-
-    # Acces a global variable
-    global switch
-
-    # # idea to activate / deactivate plotting
-    # if switch == "on":
-    #
-    #
-    #     # User inputs
-    #     global global_input
-    #     # Calculate important data for plotting from scraper program
-    #     core_values = scraper.returner(global_input)
-    #
-    #     # Function call for plotting (FUNKTIONIERT BISHER NICHT)
-    #     #plot(core_values[0], core_values[1], core_values[2], core_values[3], core_values[4], core_values[5], core_values[6], core_values[7], core_values[8], core_values[9])
-    #
-    #     # The plot function as plain code with all variables substituted with data from the scraper
-    #     plt.figure(figsize=(10,5)) # defines the figure size
-    #     plt.plot(core_values[1], core_values[2], color='salmon', linewidth=1.0, label=f'Data of {core_values[0]}') # plot of the historical ticker data
-    #     plt.scatter(len(core_values[3]), core_values[4], color='mediumblue', marker='o', label='Current price', zorder=2.5, s=25) # plot of the current ticker price
-    #
-    #     # drawing the regression line in a color that depends on the coefficient we calculated above
-    #     if core_values[5] > 0: # positive correlation
-    #         plt.plot(core_values[6], core_values[8]*core_values[6] + core_values[9], color='limegreen', label='Regression line')
-    #     if core_values[5] < 0: # negative correlation
-    #         plt.plot(core_values[6], core_values[8]*core_values[6] + core_values[9], color='red', label='Regression line')
-    #     if core_values[5] == 0: # no correlation
-    #         plt.plot(core_values[6], core_values[8]*core_values[6] + core_values[9], color='cadetblue', label='Regression line')
-    #
-    #     plt.legend(loc='upper left') # legend
-    #     plt.tight_layout() # for better visualization
-    #     plt.savefig('graph.png') # saves the graph
-    #     plt.show()
-    #
-    #     # Deactivate plotting
-    #     switch = "off"
 
     # Error handler
     dispatcher.add_error_handler(error)
@@ -233,7 +157,7 @@ def main():
 
 # Was neccessary for scraper main()
 #if __name__ == "__main__":
-#    main()
+main()
 
 
 
