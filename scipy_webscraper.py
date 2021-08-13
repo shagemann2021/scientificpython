@@ -5,19 +5,24 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.linear_model import LinearRegression
-import telegram_bot as bot
+#import telegram_bot as bot
 
 
 # The scrape function scrapes all the information that we need to use for our plot, our regression and for the Telegram bot
 def scrape(t='BTC-USD', p1="2017-01-01", p2=datetime.today().strftime('%Y-%m-%d')):
     ticker = yf.Ticker(t) # getting the passed ticker via yfinance
+
+    if (ticker.info['regularMarketPrice'] == None):
+        bot_placeholder_fun()
+        raise NameError("You did not input a correct stock ticker! Try again.")
+
+
+
     df = ticker.history(start=p1, end=p2, interval='1d') # the dataframe including data from period1 to period2 (if no periods are passed, the beginning of 2017 until today will be used)
     df['Date'] = df.index # adding the 'Date' column, containing the dates of the index column for easier access
     current_price = ticker.info['regularMarketPrice'] # saving the current price of the ticker
 
     return [df, current_price, t] # returning a list that contains the dataframe, the current price of the ticker and the name of the ticker
-
-
 
 # The values function creates lists that contain the x and y values for our calculations and the plot
 def values(df):
@@ -62,24 +67,35 @@ def plot(t, x, y, df, current_price, correlation, x_plot, y_plot, m, b):
     plt.legend(loc='upper left') # legend
     plt.tight_layout() # for better visualization
     plt.savefig('graph.png') # saves the graph
-    plt.show()
+    #plt.show()
+
+
+
+
+# def starter(user_input):
+#     # #function_from_bot sends list of strings
+#     # for stock in user_input:
+#     #     try:
+#     #         print(stock)
+#     #         list = scrape(stock)
+#     #         #bot.decider(1)
+#     #         main(list)
+#     #
+#     #     except:
+#     #         #bot.decider(2)
+#     #         print("Input has no data to scrape")
+#
+#     list = scrape(stock)
+#     if (ticker.info['regularMarketPrice'] == None):
+#         raise NameError("You did not input a correct stock ticker! Try again.")
+#
 
 
 
 # The main function puts together all data
-def main(user_input):
+def returner(user_input):
 
-    #function_from_bot sends list of strings
-    for stock in user_input:
-        try:
-            list = scrape(stock)
-            bot.decider(1)
-
-        except ValueError:
-            bot.decider(2)
-            print("Input has no data to scrape")
-
-
+    list = scrape(user_input)
     data = list[0] # the dataframe
     current = list[1] # the current price
     name = list[2] # the name of the ticker
@@ -95,7 +111,7 @@ def main(user_input):
     m = xyplotvalues[2] # ascent of regression line
     b = xyplotvalues[3] # intercept of regression line
 
-    plot(name, x, y, data, current, correlation, x_plot, y_plot, m, b) # plot and save the data
+    return([name, x, y, data, current, correlation, x_plot, y_plot, m, b]) # plot and save the data
 
 if __name__ == "__main__":
     main()
