@@ -3,8 +3,8 @@ from telegram import Update
 import responses as re
 import scipy_webscraper as scraper
 import matplotlib.pyplot as plt
-import messenger as pleasedoit
-import scipy_webscraper as scraper
+import messenger
+import time
 
 # Indicate starting
 print("let's go")
@@ -91,20 +91,27 @@ def message_receiver(update: Update, context: CallbackContext) -> None:
 #     update.message.reply_text(update.message.text)
 
 
-def user_input_sharer(update: Update, context: CallbackContext) -> None:
+def photo_for_querie(update: Update, context: CallbackContext) -> None:
     '''
     Saves user input as global variable.
 
     '''
 
-    #print(type(str(update.message.text)/"/".lower()))
+    # Saves user input as global variable
     global global_input
     global_input = str(update.message.text).lower()
 
-    # Call function to share user input with scraper
-    scraper.txt_writer(str(global_input))
-    #t.lol(global_input)
-    #print(global_input)
+    # Function call to wright input into test.txt file
+    messenger.txt_writer(str(global_input))
+
+    # Stops program so scipy_webscraper can save the picture of the requested plot
+    time.sleep(5)
+
+    # Fetches individual id from user
+    chat_id = update.message.chat.id
+    # Copies photo into chat using the bots function
+    #Picture from wd or a url as second argument
+    update.message.bot.send_photo(chat_id, open("graph.png", "rb"))
 
 
 
@@ -143,9 +150,13 @@ def main():
     dispatcher.add_handler(CommandHandler("help", help_command))
 
 
+    # Message handler
+    # Filters for text and not command inputs
+    #dispatcher.add_handler(MessageHandler(Filters.text & Filters.command, message_receiver))
+
 
     # fetches all inputs without "/"
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, user_input_sharer))
+    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, photo_for_querie))
 
     # Error handler
     dispatcher.add_error_handler(error)
@@ -158,26 +169,3 @@ def main():
 # Was neccessary for scraper main()
 #if __name__ == "__main__":
 main()
-
-
-
-
-
-
-
-
-
-# Skizze decider fun
-# if decider(1) == True:
-    # Callt send_photo function for specific string (in chat /b)
-#     dispatcher.add_handler(CommandHandler(Filters.command & ~Filters.text, photo_sender))
-
-# Send some kind of error signal
-# else:
-#     print("input is not a stock")
-
-# Message handler
-# Filters for text and not command inputs
-#dispatcher.add_handler(MessageHandler(Filters.text & Filters.command, message_receiver))
-
-#main()
