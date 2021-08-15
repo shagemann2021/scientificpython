@@ -13,6 +13,13 @@ import yfinance as yf
 
 
 
+'''
+This program is a Telegram bot. When it is started it will keep running and can
+receive input from users in the corresponding Telegram chat, as well as send
+pictures and messages back to the user.
+'''
+
+
 # Indicate starting
 print("let's go")
 
