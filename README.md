@@ -21,4 +21,4 @@ How to use the Telegram Bot:
 'regression TCEHY 01.01.2020'
 'full_graph TSLA 01.01.2017 01.01.2019'
 
-An option would be to give simply the name of any graph and the standard response would be would bitcoin stocks 'BTC-USD' for the year 2020 to the current date.
+An option would be to give simply the name of any graph and the standard response would be bitcoin stocks 'BTC-USD' for the year 2020 to the current date.
