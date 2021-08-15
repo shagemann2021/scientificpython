@@ -1,7 +1,11 @@
 # scientificpython
 As our final Scientific Python project, we decided to implement a stock exchange webscraper combined with a Telegram Bot to have access to this information straight to your phone real-time. We used the Yahoo! Finance market data downloader to continuously scrape the historical to current stock price from the web, visualise this information using three different plots - with varying levels of complexity depending as to how much information you want to know - and then have these graphs accessible to a Telegram bot chat. Additionally there is the option to get the current stock price.
 
-Please make sure to check you have installed all the packages listed in requirements.txt (e.g. with pip install -r requirements.txt) to ensure functioning code. 
+Please make sure to check you have installed all the packages listed in requirements.txt (e.g. with pip install -r requirements.txt) to ensure functioning code.
+
+IMPORTANT NOTES:
+- you need to define your personal working directory before starting any of the files in order for everything to work perfectly.
+- the webscraper and the bot need to be started and running at the same time
 
 The three graphs that are available to be used are: 
 - simple: just a basic stock price graph
@@ -16,8 +20,8 @@ How to use the Telegram Bot:
 'current TCEHY'
 'detailed'
 'simple BTC-USD'
-'regression TCEHY 01.01.2020'
-'detailed TSLA 01.01.2017 01.01.2019'
+'regression TCEHY 2020-01-01'
+'detailed TSLA 2017-01-01 2019-01-01'
 
 Regarding the Telegram Bot:
 You can only run one instance of the bot at once (therefore it must be properly closed). If any errors occur regarding updating, missing authority or several instances do the following:
@@ -27,9 +31,9 @@ You can only run one instance of the bot at once (therefore it must be properly 
 -  Save, close bot and start again
 The bot works with threads and therefore is hard too handle in combination with other programs and libraries. Therefore some python functionalities might not work.
 
-Explanation of the candlestick graph:
 An option would be to give simply the name of any graph and the standard response would be would bitcoin stocks 'BTC-USD' for the year 2020 to the current date.
 
+Explanation of the candlestick graph:
 In the Candlestick Chart, the green and red boxes are a classic method used by traders to determine possible price movement based on past patterns. Each candlestick represents four pieces of information for that day: open and close in the thick body; high and low in the longer “candle wicks” above and below the body. Trading is often dictated by emotion, which can be read in candlestick charts by visually representing the size of price moves with different colors. Traders use the candlesticks to make trading decisions based on regularly occurring patterns that help forecast the short-term direction of the price.
 
 
