@@ -9,14 +9,21 @@ from sklearn.linear_model import LinearRegression
 from mplfinance.original_flavor import candlestick_ohlc
 import matplotlib.dates as mpl_dates
 import csv
+import os
 
 
 '''
 This script scrapes information from yahoo finance with the information received
 from the scipy_webscraper and then creates plots which it saves in the folder in
 which this program resides.
+
+Personal working directory has to be set!
 '''
 
+### Set your current working directory ###
+os.chdir("C:/Users/bad42/Desktop/scientificpython")
+# Checks for current working directory
+print("The current working directory (plot) is:" + os.getcwd())
 
 def simple(t='BTC-USD', p1="2020-01-01", p2=datetime.today().strftime('%Y-%m-%d')):
     '''
@@ -26,39 +33,43 @@ def simple(t='BTC-USD', p1="2020-01-01", p2=datetime.today().strftime('%Y-%m-%d'
     # Collecting the passed ticker via yfinance
     ticker = yf.Ticker(t)
 
-    # Taking care of the case that an incorrect input is given
+    # Checks if the user input is a stock that can be scraper with yfinance
     if (ticker.info['regularMarketPrice'] == None):
-        raise NameError("You did not input a correct stock ticker! Try again.")
+        print("User input is not a valid stock")
+        # Check if graph exists in file and delete it
+        # bot sends no picture if stock input is false
+        if os.path.exists("graph.png"):
+            os.remove("graph.png")
 
     # The dataframe including data from period1 to period2 (if no periods are passed, the beginning of 2020 until today will be used)
-    df = ticker.history(start=p1, end=p2, interval='1d') 
+    df = ticker.history(start=p1, end=p2, interval='1d')
     # Adding the 'Date' column, containing the dates of the index column for easier access
-    df['Date'] = df.index 
+    df['Date'] = df.index
     # Saving the current price of the ticker
-    current_price = ticker.info['regularMarketPrice'] 
- 
+    current_price = ticker.info['regularMarketPrice']
+
     # List of dates of every day in the periods
-    x_time = df['Date'].tolist() 
+    x_time = df['Date'].tolist()
     # List of the historical prices of the ticker in the periods
-    y = df['Close'].tolist() 
-    
+    y = df['Close'].tolist()
+
     # Sets background to dark style
     plt.style.use('dark_background')
-    
+
     # Defines the figure size
-    plt.figure(figsize=(10,5)) 
+    plt.figure(figsize=(10,5))
     # Plot of the historical ticker data
-    plt.plot(x_time, y, color='salmon', linewidth=1.0, label=f'Data of {t}') 
+    plt.plot(x_time, y, color='salmon', linewidth=1.0, label=f'Data of {t}')
 
     # Setting axis labels
     plt.xlabel('Date')
     plt.ylabel('Price')
 
     # Setting the title, legend. layout and saving the graph
-    plt.title('Simple Graph of ' f'Data of {t}') 
+    plt.title('Simple Graph of ' f'Data of {t}')
     plt.legend(loc='upper left')
     plt.tight_layout()
-    plt.savefig('graph.png') 
+    plt.savefig('graph.png')
 
 def full_graph(t='BTC-USD', p1="2020-01-01", p2=datetime.today().strftime('%Y-%m-%d')):
     '''
@@ -67,32 +78,37 @@ def full_graph(t='BTC-USD', p1="2020-01-01", p2=datetime.today().strftime('%Y-%m
     showing trends using a Candlestick Chart, overlayed with Bollinger Bands.
     '''
     # Collecting the passed ticker via yfinance
-    ticker = yf.Ticker(t) 
+    ticker = yf.Ticker(t)
 
-    # Error raised, in case of incorrect input
+    # Checks if the user input is a stock that can be scraper with yfinance
     if (ticker.info['regularMarketPrice'] == None):
-        raise NameError("You did not input a correct stock ticker! Try again.")
+        print("User input is not a valid stock")
+        # Check if graph exists in file and delete it
+        # bot sends no picture if stock input is false
+        if os.path.exists("graph.png"):
+            os.remove("graph.png")
+
 
     # The dataframe including data from period1 to period2 (if no periods are passed, the beginning of 2020 until today will be used)
-    df = ticker.history(start=p1, end=p2, interval='1d') 
+    df = ticker.history(start=p1, end=p2, interval='1d')
     # Adding the 'Date' column, containing the dates of the index column for easier access
     df['Date'] = df.index
     # Saving the current price of the ticker
-    current_price = ticker.info['regularMarketPrice'] 
+    current_price = ticker.info['regularMarketPrice']
     # List of dates of every day in the periods
-    x_time = df['Date'].tolist() 
+    x_time = df['Date'].tolist()
     # List of the historical prices of the ticker in the periods
-    y = df['Close'].tolist() 
+    y = df['Close'].tolist()
 
     # Selecting for all the rows with these column labels
-    ohlc = df.loc[:, ['Date', 'Open', 'High', 'Low', 'Close']] 
+    ohlc = df.loc[:, ['Date', 'Open', 'High', 'Low', 'Close']]
     # Converting the object into datetime and into matplotlib as a float - for the candlestick chart coming later
-    ohlc['Date'] = pd.to_datetime(ohlc['Date'])  
+    ohlc['Date'] = pd.to_datetime(ohlc['Date'])
     ohlc['Date'] = ohlc['Date'].apply(mpl_dates.date2num)
-    ohlc = ohlc.astype(float) 
-    
+    ohlc = ohlc.astype(float)
+
     # Set background to dark style
-    plt.style.use('dark_background') 
+    plt.style.use('dark_background')
 
     # Candlestick plot
     fig, ax = plt.subplots(figsize=(15,10))
@@ -125,45 +141,55 @@ def regression(t='BTC-USD', p1="2020-01-01", p2=datetime.today().strftime('%Y-%m
     period "p1" to "p2" are displayed. Additionally a regression line is generated.
     '''
     # Collecting thepassed ticker via yfinance
-    ticker = yf.Ticker(t) 
+    ticker = yf.Ticker(t)
+
+    # Checks if the user input is a stock that can be scraper with yfinance
+    if (ticker.info['regularMarketPrice'] == None):
+        print("User input is not a valid stock")
+        # Check if graph exists in file and delete it
+        # bot sends no picture if stock input is false
+        if os.path.exists("graph.png"):
+            os.remove("graph.png")
+
+
     # The dataframe including data from period1 to period2 (if no periods are passed, the beginning of 2020 until today will be used)
-    df = ticker.history(start=p1, end=p2, interval='1d') 
+    df = ticker.history(start=p1, end=p2, interval='1d')
     # Adding the 'Date' column, containing the dates of the index column for easier access
-    df['Date'] = df.index 
+    df['Date'] = df.index
     # Saving the current price of the ticker
-    current_price = ticker.info['regularMarketPrice'] 
-    
+    current_price = ticker.info['regularMarketPrice']
+
     # List of dates of every day in the periods
-    x_dates = df['Date'].tolist() 
+    x_dates = df['Date'].tolist()
     # Converting the object into datetime and into matplotlib dates for easier plotting
-    x = pd.to_datetime(df['Date']).apply(mpl_dates.date2num)  
+    x = pd.to_datetime(df['Date']).apply(mpl_dates.date2num)
     # List of the historical prices of the ticker in the periods
-    y = df['Close'].tolist() 
-    
+    y = df['Close'].tolist()
+
     # Array of x values (reshape needed for correct format)
     x_arr = np.array(x).reshape((-1,1))
     # Array of y values
-    y_arr = np.array(y) 
+    y_arr = np.array(y)
     # Performs the regression
-    model = LinearRegression() 
+    model = LinearRegression()
     # Fits the model with our data
-    model.fit(x_arr, y_arr) 
+    model.fit(x_arr, y_arr)
     # Saves the correlation coefficients
-    correlation = model.coef_ 
-    
+    correlation = model.coef_
+
     # Set background to dark
-    plt.style.use('dark_background') 
+    plt.style.use('dark_background')
 
     # Defining the figure size
     plt.figure(figsize=(10,5))
     # Plot of the historical ticker data
-    plt.plot(x_dates,y, color='salmon', linewidth=1.0, label=f'Data of {t}') 
+    plt.plot(x_dates,y, color='salmon', linewidth=1.0, label=f'Data of {t}')
     # Sets a marker of the current ticker price
-    plt.scatter(x_dates[-1], current_price, color='mediumblue', marker='o', label='Current price', zorder=2.5, s=25) 
+    plt.scatter(x_dates[-1], current_price, color='mediumblue', marker='o', label='Current price', zorder=2.5, s=25)
 
     # Array of x and y values
     x_plot = np.array(x)
-    y_plot = np.array(y) 
+    y_plot = np.array(y)
     # Polyfit of the values (resulting in ascent and intercept)
     m,b = np.polyfit(x, y, 1)
 
@@ -181,6 +207,6 @@ def regression(t='BTC-USD', p1="2020-01-01", p2=datetime.today().strftime('%Y-%m
 
     # Setting the title, lenegnd, layout and saving the graph
     plt.title('Regression Graph of ' f'Data of {t}')
-    plt.legend(loc='upper left') 
+    plt.legend(loc='upper left')
     plt.tight_layout()
-    plt.savefig('graph.png') 
+    plt.savefig('graph.png')

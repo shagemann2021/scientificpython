@@ -3,7 +3,7 @@ import requests
 import csv
 import os
 import os.path
-import scraper_with_all_graphs
+import scraper_plotter as scraper
 
 
 
@@ -13,13 +13,13 @@ This program constantly runs in the background to check for changes in the file
 size. A change in file size means our Telegram bot received input and is
 writing the input in our txt file. This program than creates the according plots
 and saves them as png.
+
+Personal working directory has to be set!
 '''
 
 
 ### Set your current working directory ###
-os.chdir("C:/Users/bad42/Desktop/final_project")
-
-
+os.chdir("C:/Users/bad42/Desktop/scientificpython")
 # Checks for current working directory
 print("The current working directory (scraper) is:" + os.getcwd())
 
@@ -59,7 +59,7 @@ while(True):
 
     # if the size of the file changes, the txt file is read and a function is
     # called with its last entry
-    if size != size2:
+    if old_size != new_size:
         lis = list(csv.reader(open('inputs.txt')))
 
 
@@ -79,33 +79,33 @@ while(True):
         # with the user input, the standart parameters are used.
         if last_line_list[0] == "simple":
             if len(last_line_list) == 1:
-                scraper_with_all_graphs.simple()
+                scraper.simple()
             if len(last_line_list) == 2:
-                scraper_with_all_graphs.simple(t=last_line_list[1])
+                scraper.simple(t=last_line_list[1])
             if len(last_line_list) == 3:
-                scraper_with_all_graphs.simple(t=last_line_list[1], p1=last_line_list[2])
+                scraper.simple(t=last_line_list[1], p1=last_line_list[2])
             if len(last_line_list) == 4:
-                scraper_with_all_graphs.simple(t=last_line_list[1], p1=last_line_list[2], p2=last_line_list[3])
+                scraper.simple(t=last_line_list[1], p1=last_line_list[2], p2=last_line_list[3])
 
         elif last_line_list[0] == "regression":
             if len(last_line_list) == 1:
-                scraper_with_all_graphs.regression()
+                scraper.regression()
             if len(last_line_list) == 2:
-                scraper_with_all_graphs.regression(t=last_line_list[1])
+                scraper.regression(t=last_line_list[1])
             if len(last_line_list) == 3:
-                scraper_with_all_graphs.regression(t=last_line_list[1], p1=last_line_list[2])
+                scraper.regression(t=last_line_list[1], p1=last_line_list[2])
             if len(last_line_list) == 4:
-                scraper_with_all_graphs.regression(t=last_line_list[1], p1=last_line_list[2], p2=last_line_list[3])
+                scraper.regression(t=last_line_list[1], p1=last_line_list[2], p2=last_line_list[3])
 
         elif last_line_list[0] == "detailed":
             if len(last_line_list) == 1:
-                scraper_with_all_graphs.full_graph()
+                scraper.full_graph()
             if len(last_line_list) == 2:
-                scraper_with_all_graphs.full_graph(t=last_line_list[1])
+                scraper.full_graph(t=last_line_list[1])
             if len(last_line_list) == 3:
-                scraper_with_all_graphs.full_graph(t=last_line_list[1], p1=last_line_list[2])
+                scraper.full_graph(t=last_line_list[1], p1=last_line_list[2])
             if len(last_line_list) == 4:
-                scraper_with_all_graphs.full_graph(t=last_line_list[1], p1=last_line_list[2], p2=last_line_list[3])
+                scraper.full_graph(t=last_line_list[1], p1=last_line_list[2], p2=last_line_list[3])
 
         # with the word "close" we can terminate our scraper
         elif last_line_list[0] == "close":

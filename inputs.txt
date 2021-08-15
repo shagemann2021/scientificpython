@@ -1,0 +1,6 @@
+detailed btc-usd
+simple btc-usd
+detailed btc-usd 2019-05-24
+detailed btc-usd
+detailed btc-usd 2019-05-24
+detailed tsla 2019-05-24

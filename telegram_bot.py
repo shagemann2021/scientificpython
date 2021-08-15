@@ -17,7 +17,16 @@ import yfinance as yf
 This program is a Telegram bot. When it is started it will keep running and can
 receive input from users in the corresponding Telegram chat, as well as send
 pictures and messages back to the user.
+
+Personal working directory has to be set!
 '''
+
+### Set your current working directory ###
+os.chdir("C:/Users/bad42/Desktop/scientificpython")
+
+
+# Checks for current working directory
+print("The current working directory (bot) is:" + os.getcwd())
 
 
 # Indicate starting
@@ -78,7 +87,7 @@ def photo_for_querie(update: Update, context: CallbackContext) -> None:
     context: Assures all handlers (Message- & Commandhandler in main()) work in the same group
     '''
     # Saves user input as global variable
-    global global_input#
+    global global_input
     # Transforms it into lowercase string
     global_input = str(update.message.text).lower()
 
@@ -102,7 +111,7 @@ def photo_for_querie(update: Update, context: CallbackContext) -> None:
         messenger.txt_writer(str(global_input))
 
         # Stop program until other ones are finished with saving the plot
-        time.sleep(6)
+        time.sleep(7)
 
         # Fetching users chat id to send the plot (saved in wd) as picture
         chat_id = update.message.chat.id
