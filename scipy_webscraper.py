@@ -1,58 +1,39 @@
 from pathlib import Path
 import requests
-from datetime import datetime
-import yfinance as yf
-import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
-from sklearn.linear_model import LinearRegression
 import csv
 import os
 import os.path
+import scraper_with_all_graphs
 
+
+### Set your current working directory ###
+os.chdir("C:/Users/bad42/Desktop/final_project")
+# Checks for current working directory
+print("The current working directory (scraper) is:" + os.getcwd())
+
+# Showing the prgram has started
 print("Scanning text file...")
-
-def everything(t="TCEHY", p1="2017-01-01", p2=datetime.today().strftime('%Y-%m-%d')):
-    print(f'Ticker: {t}')
-    ticker = yf.Ticker(t) # getting the passed ticker via yfinance
-
-    if (ticker.info['regularMarketPrice'] == None):
-        print("Baby this wont work")
-        if os.path.exists("graph.png"):
-            os.remove("graph.png")
-        #raise NameError("You did not input a correct stock ticker! Try again.")
-
-    else:
-        df = ticker.history(start=p1, end=p2, interval='1d') # the dataframe including data from period1 to period2 (if no periods are passed, the beginning of 2017 until today will be used)
-        df['Date'] = df.index # adding the 'Date' column, containing the dates of the index column for easier access
-        current_price = ticker.info['regularMarketPrice'] # saving the current price of the ticker
-
-        x_num = list(range(0, len(df))) # numerical list of every day in the periods
-        x_time = df['Date'].tolist() # list of dates of every day in the periods (NOT USED YET!!!)
-        y = df['Close'].tolist() # list of the historical prices of the ticker in the periods
-
-        plt.figure(figsize=(10,5)) # defines the figure size
-        plt.plot(x_num, y, color='salmon', linewidth=1.0, label=f'Data of {t}') # plot of the historical ticker data
-
-        plt.legend(loc='upper left') # legend
-        plt.tight_layout() # for better visualization
-        plt.savefig('graph.png') # saves the graph
-        #plt.show()
-
 
 
 global size
 size = 0
 global size2
-size2 = Path("tester.txt").stat().st_size
+size2 = Path("inputs.txt").stat().st_size
 
 while(True):
+    """
+    Endless loop which constantly checks for new input in the txt file, which is written by the Telegram bot.
+    When a user gives input the file size changes and the if statement will be called. The lines of the file
+    will be read in as a list and depending on the input the corresponding function will be called and the
+    right plot will be saved in the folder in which our program resides.
+    """
     size = size2
-    size2 = Path("tester.txt").stat().st_size
+    size2 = Path("inputs.txt").stat().st_size
 
+    # if the size of the file changes, the txt file is read and a function is called with its last entry
     if size != size2:
-        lis = list(csv.reader(open('tester.txt')))
-
+        lis = list(csv.reader(open('inputs.txt')))
+    # To make sure our index is not out of bounds with the first entry
         if len(lis) == 1:
             last_line = lis[0]
             last_line = str(last_line[0])
@@ -61,10 +42,39 @@ while(True):
             last_line = lis[len(lis)-1]
             last_line = str(last_line[0])
             last_line_list = last_line.split()
+        # Checking for the first word and choose the correspoinding plot
+        # It is possible to call it with just the keyword for the plot, the keyword and ticker symbol,
+        # the keyword, ticker symbol, start of time period or with the keyword, ticker symbol, start and end of time period.
+        # missing values will be substituted with the standart values (ticker = BTC-USD, start period = 2020-01-01, end period = today)
+        if last_line_list[0] == "simple":
+            if len(last_line_list) == 1:
+                scraper_with_all_graphs.simple()
+            if len(last_line_list) == 2:
+                scraper_with_all_graphs.simple(t=last_line_list[1])
+            if len(last_line_list) == 3:
+                scraper_with_all_graphs.simple(t=last_line_list[1], p1=last_line_list[2])
+            if len(last_line_list) == 4:
+                scraper_with_all_graphs.simple(t=last_line_list[1], p1=last_line_list[2], p2=last_line_list[3])
 
-        if len(last_line_list) == 1:
-            everything(t=last_line_list[0])
-        if len(last_line_list) == 2:
-            everything(t=last_line_list[0], p1=last_line_list[1])
-        if len(last_line_list) == 3:
-            everything(t=last_line_list[0], p1=last_line_list[1], p2=last_line_list[2])
+        elif last_line_list[0] == "regression":
+            if len(last_line_list) == 1:
+                scraper_with_all_graphs.regression()
+            if len(last_line_list) == 2:
+                scraper_with_all_graphs.regression(t=last_line_list[1])
+            if len(last_line_list) == 3:
+                scraper_with_all_graphs.regression(t=last_line_list[1], p1=last_line_list[2])
+            if len(last_line_list) == 4:
+                scraper_with_all_graphs.regression(t=last_line_list[1], p1=last_line_list[2], p2=last_line_list[3])
+
+        elif last_line_list[0] == "detailed":
+            if len(last_line_list) == 1:
+                scraper_with_all_graphs.full_graph()
+            if len(last_line_list) == 2:
+                scraper_with_all_graphs.full_graph(t=last_line_list[1])
+            if len(last_line_list) == 3:
+                scraper_with_all_graphs.full_graph(t=last_line_list[1], p1=last_line_list[2])
+            if len(last_line_list) == 4:
+                scraper_with_all_graphs.full_graph(t=last_line_list[1], p1=last_line_list[2], p2=last_line_list[3])
+        # with the word "close" we can terminate our scraper
+        elif last_line_list[0] == "close":
+            exit()
