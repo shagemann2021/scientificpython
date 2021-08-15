@@ -3,7 +3,9 @@ As our final Scientific Python project, we decided to implement a stock exchange
 
 Please make sure to check you have installed all the packages listed in requirements.txt (e.g. with pip install -r requirements.txt) to ensure functioning code.
 
-You need to define your personal working directory before starting any of the files in order for everything to work perfectly.
+IMPORTANT NOTES:
+- you need to define your personal working directory before starting any of the files in order for everything to work perfectly.
+- the webscraper and the bot need to be started and running at the same time
 
 The three graphs that are available to be used are: 
 - simple: just a basic stock price graph
