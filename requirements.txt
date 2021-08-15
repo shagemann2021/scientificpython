@@ -1,0 +1,13 @@
+mpl_finance 
+scikit-learn
+matplotlib
+numpy
+pandas
+yfinance
+csv 
+pathlib
+requests
+datetime
+os
+python-telegram-bot
+pyTelegramBotApi
