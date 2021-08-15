@@ -29,9 +29,9 @@ You can only run one instance of the bot at once (therefore it must be properly 
 -  Save, close bot and start again
 The bot works with threads and therefore is hard too handle in combination with other programs and libraries. Therefore some python functionalities might not work.
 
-Explanation of the candlestick graph:
 An option would be to give simply the name of any graph and the standard response would be would bitcoin stocks 'BTC-USD' for the year 2020 to the current date.
 
+Explanation of the candlestick graph:
 In the Candlestick Chart, the green and red boxes are a classic method used by traders to determine possible price movement based on past patterns. Each candlestick represents four pieces of information for that day: open and close in the thick body; high and low in the longer “candle wicks” above and below the body. Trading is often dictated by emotion, which can be read in candlestick charts by visually representing the size of price moves with different colors. Traders use the candlesticks to make trading decisions based on regularly occurring patterns that help forecast the short-term direction of the price.
 
 
