@@ -13,6 +13,8 @@ The three graphs that are available to be used are:
 - detailed: has multiple layers of information showing trends using a Candlestick Chart, overlayed with Bollinger Bands. More information below as to how to interpret these graphs. 
 
 How to use the Telegram Bot:
+- find the currently used bot under "scipy_stock_bot" in Telegram (How to change the bot is described in the next section)
+
 - for the current stock price write: current <Ticker_symbol>
 - for the graphs type your requests in the following order: '<type_of_graph> <Ticker_symbol> <start_date> <end_date>' (dates are typed in the form: year-month-day)
 - to close the scraper in the background (plots will not work before starting the scraper again) type: close
@@ -24,7 +26,7 @@ How to use the Telegram Bot:
 'detailed TSLA 2017-01-01 2019-01-01'
 
 Regarding the Telegram Bot:
-You can only run one instance of the bot at once (therefore it must be properly closed). If any errors occur regarding updating, missing authority or several instances do the following:
+You can only run one instance of the bot at once (therefore it must be properly closed). If any errors occur regarding updating, authority or several instances do the following:
 -  Search for telegram user botfather (pun intended)
 -  Type “/newbot” and follow instructions
 -  Copy the API into the “api” variable of the bot (line 16)
