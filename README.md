@@ -25,6 +25,8 @@ How to use the Telegram Bot:
 'regression TCEHY 2020-01-01'
 'detailed TSLA 2017-01-01 2019-01-01'
 
+- we tried to catch input errors as good as possible. Still, if you type in the dates in the wrong format scipy_webscraper throws has to be restarted.
+
 Regarding the Telegram Bot:
 You can only run one instance of the bot at once (therefore it must be properly closed). If any errors occur regarding updating, authority or several instances do the following:
 -  Search for telegram user botfather (pun intended)
